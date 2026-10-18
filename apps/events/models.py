@@ -35,6 +35,19 @@ class Event(models.Model):
     title = models.CharField(max_length=200, verbose_name="عنوان")
     description = models.TextField(verbose_name="توضیحات")
 
+    cover_image = models.ImageField(
+        upload_to="events/covers/",
+        blank=True,
+        null=True,
+        verbose_name="تصویر اصلی رویداد",
+    )
+
+    video_url = models.URLField(
+        max_length=500,
+        blank=True,
+        verbose_name="لینک ویدیوی رویداد",
+    )
+
     event_type = models.CharField(
         max_length=10,
         choices=EventType.choices,
