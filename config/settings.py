@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.coaches',
     'apps.sports',
+    'apps.events',
+    'apps.locations',
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
