@@ -13,6 +13,11 @@ urlpatterns = [
     "api/sports/",
     include("apps.sports.api_urls"),
     ),
+    path(
+        "api/accounts/",
+        include("apps.accounts.api_urls"),
+    ),
+
 ]
 
 if settings.DEBUG:

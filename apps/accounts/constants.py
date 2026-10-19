@@ -1,0 +1,12 @@
+
+# OTP configuration
+OTP_LENGTH = 6
+OTP_EXPIRY_MINUTES = 3
+OTP_MAX_ATTEMPTS = 5
+
+# OTP resend configuration
+OTP_RESEND_COOLDOWN_SECONDS = 60
+OTP_MAX_RESENDS = 3
+
+# Registration configuration
+PENDING_REGISTRATION_EXPIRY_MINUTES = 3

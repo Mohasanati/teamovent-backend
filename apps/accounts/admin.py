@@ -1,35 +1,38 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+
 from .models import User, UserProfile
 
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     ordering = ("phone_number",)
+
     list_display = (
         "phone_number",
         "first_name",
         "last_name",
+        "role",
         "is_active",
-        "is_staff",
     )
+
+    list_filter = ("role", "is_active")
     search_fields = ("phone_number", "first_name", "last_name")
 
     fieldsets = (
         (None, {"fields": ("phone_number", "password")}),
-        ("اطلاعات شخصی", {"fields": ("first_name", "last_name", "email")}),
         (
-            "دسترسی‌ها",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                )
-            },
+            "اطلاعات شخصی",
+            {"fields": ("first_name", "last_name", "email")},
+        ),
+        (
+            "نقش و وضعیت حساب",
+            {"fields": ("role", "is_active")},
+        ),
+        (
+            "دسترسی‌های مدیریتی جنگو",
+            {"fields": ("is_superuser", "groups", "user_permissions")},
         ),
         ("تاریخ‌ها", {"fields": ("last_login", "date_joined")}),
     )
@@ -43,9 +46,9 @@ class CustomUserAdmin(UserAdmin):
                     "phone_number",
                     "first_name",
                     "last_name",
+                    "role",
                     "password1",
                     "password2",
-                    "is_staff",
                     "is_active",
                 ),
             },

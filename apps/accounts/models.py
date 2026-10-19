@@ -42,6 +42,11 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    class Role(models.TextChoices):
+        ADMIN = "admin", "مدیر"
+        ATHLETE = "athlete", "ورزشکار"
+        COACH = "coach", "مربی"
+
     username = None
 
     phone_number = models.CharField(
@@ -52,6 +57,13 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=150, verbose_name="نام")
     last_name = models.CharField(max_length=150, verbose_name="نام خانوادگی")
 
+    role = models.CharField(
+        max_length=20,
+        choices=Role.choices,
+        default=Role.ATHLETE,
+        verbose_name="نقش کاربر",
+    )
+    
     USERNAME_FIELD = "phone_number"
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
@@ -102,3 +114,41 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = "پروفایل کاربر"
         verbose_name_plural = "پروفایل کاربران"
+
+
+class PendingRegistration(models.Model):
+    phone_number = models.CharField(
+        max_length=15,
+        unique=True,
+        verbose_name="شماره موبایل",
+    )
+    first_name = models.CharField(max_length=150, verbose_name="نام")
+    last_name = models.CharField(max_length=150, verbose_name="نام خانوادگی")
+    password_hash = models.CharField(max_length=128)
+
+    
+    last_otp_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="زمان آخرین ارسال کد",
+    )
+
+    otp_resend_count = models.PositiveSmallIntegerField(
+        default=0,
+        verbose_name="تعداد ارسال مجدد کد",
+    )
+
+
+    otp_hash = models.CharField(max_length=128)
+    expires_at = models.DateTimeField()
+    attempts = models.PositiveSmallIntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.phone_number
+
+    class Meta:
+        verbose_name = "ثبت‌نام در انتظار تأیید"
+        verbose_name_plural = "ثبت‌نام‌های در انتظار تأیید"
